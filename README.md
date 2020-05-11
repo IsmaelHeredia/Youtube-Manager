@@ -1,4 +1,4 @@
-# Youtube-Manager
+# Youtube Manager
  
  A program in Python for download music and videos from youtube.
  
