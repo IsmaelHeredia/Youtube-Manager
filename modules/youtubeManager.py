@@ -3,6 +3,7 @@
 # pip install youtube-dl
 # pip install --upgrade youtube-dl
 # Clean cache : youtube-dl --rm-cache-dir
+# Date : 07/09/2020
 
 from functions import functions
 from modules import googleSearch
@@ -57,10 +58,6 @@ class youtubeManager(object):
         if os.path.isfile(temp_videos):
             os.remove(temp_videos)
 
-    def download_mp3(self,mp3):
-        filename = self.download_video(mp3,False)
-        self.convert_to_mp3(self.TEMP_VIDEO,filename)
-
     def download_video(self,video,only_video=False):
         if os.path.isfile(self.TEMP_VIDEO):
             os.remove(self.TEMP_VIDEO)
@@ -112,6 +109,17 @@ class youtubeManager(object):
                 print("\n[-] Error converting mp3")
                 pass
 
+    def download_songs(self,listsong):
+        print("\n[+] Opening file %s ..." % (listsong,))
+        if os.path.exists(listsong): 
+            with open(listsong) as links:
+                for link in links:
+                    filename = self.download_video(link,False)
+                    self.convert_to_mp3(self.TEMP_VIDEO,filename)
+                    time.sleep(5)
+        else:
+            print("\n[-] File not found")
+
     def findsong_and_download(self,name):
         name = name.strip("\n")
         print("\n[+] Searching song %s ..." % (name,))
@@ -130,17 +138,6 @@ class youtubeManager(object):
             with open(listsong) as names:
                 for name in names:
                     self.findsong_and_download(name)
-                    time.sleep(5)
-        else:
-            print("\n[-] File not found")
-
-    def download_links_song(self,listsong):
-        print("\n[+] Opening file %s ..." % (listsong,))
-        if os.path.exists(listsong): 
-            with open(listsong) as links:
-                for link in links:
-                    filename = self.download_video(link,False)
-                    self.convert_to_mp3(self.TEMP_VIDEO,filename)
                     time.sleep(5)
         else:
             print("\n[-] File not found")
@@ -217,4 +214,3 @@ class youtubeManager(object):
             del video_clip
         except Exception:
             pass
-
