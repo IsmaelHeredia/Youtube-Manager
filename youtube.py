@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Youtube Manager 1.0
+# Youtube Manager 1.1
 # Written by Ismael Heredia
-# Date : 07/09/2020
+# Date : 01/01/2022
 
 import argparse, os
 

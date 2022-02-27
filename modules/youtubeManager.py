@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# pip install youtube-dl
-# pip install --upgrade youtube-dl
-# Clean cache : youtube-dl --rm-cache-dir
-# Date : 07/09/2020
+# pip install yt-dlp
+# pip install --upgrade yt-dlp
+# 01/01/2022 - Module youtube_dl was changed for yt_dlp
 
 from functions import functions
 from modules import googleSearch
 
 import os,re,time
-import youtube_dl
+from yt_dlp import YoutubeDL
 import moviepy.editor as mp
 import urllib.request,urllib.parse
 from requests.utils import quote
@@ -64,7 +63,7 @@ class youtubeManager(object):
         print("\n[+] Downloading video %s ...\n" % (video,))
         filename = ""
         try:
-            with youtube_dl.YoutubeDL(self.ydl_opts_videos) as ydl:
+            with YoutubeDL(self.ydl_opts_videos) as ydl:
                 info_dict = ydl.extract_info(video, download=False)
                 video_title = info_dict.get("title", None)
                 print("\n[+] Title : %s\n" % (video_title,))
@@ -78,7 +77,7 @@ class youtubeManager(object):
                     print("\n[!] Saved in %s" % (video_path,))
                 return filename
         except:
-            pass
+            raise
         if not os.path.isfile(filename):
             print("\n[-] Error downloading video")
 
@@ -146,7 +145,7 @@ class youtubeManager(object):
         print("\n[+] Reading playlist %s ..." % (link,))
 
         try:
-            with youtube_dl.YoutubeDL(self.ydl_opts_playlists) as ydl:
+            with YoutubeDL(self.ydl_opts_playlists) as ydl:
                 playlist_dict = ydl.extract_info(link, download=False)
                 title = playlist_dict.get("title",None)
                 title = title.replace(":","")
@@ -161,7 +160,7 @@ class youtubeManager(object):
                         id_video = video.get("id")
                         title = video.get("title")
                         link = "https://www.youtube.com/watch?v=" + id_video
-                        print("\n[+] Video found : %s" % (link,))
+                        print("\n[+] Video found : %s - %s" % (title,link,))
                         filename = self.download_video(link,False)
                         only_name = os.path.basename(filename)
                         savefile = newdir + "\\" + only_name 
@@ -178,7 +177,7 @@ class youtubeManager(object):
                 for link in links:
                     print("\n[+] Reading playlist %s ..." % (link,))
                     try:
-                        with youtube_dl.YoutubeDL(self.ydl_opts_playlists) as ydl:
+                        with YoutubeDL(self.ydl_opts_playlists) as ydl:
                             playlist_dict = ydl.extract_info(link, download=False)
                             title = playlist_dict.get("title",None)
                             title = title.replace(":","")
@@ -192,7 +191,7 @@ class youtubeManager(object):
                                     id_video = video.get("id")
                                     title = video.get("title")
                                     link = "https://www.youtube.com/watch?v=" + id_video
-                                    print("\n[+] Video found : %s" % (link,))
+                                    print("\n[+] Video found : %s - %s" % (title,link,))
                                     filename = self.download_video(link,False)
                                     only_name = os.path.basename(filename)
                                     savefile = newdir + "\\" + only_name 
